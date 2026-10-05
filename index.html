@@ -195,7 +195,7 @@ function generate(){
   btns.forEach(b=>b.disabled=true);
   const dec=$('dec');dec.hidden=false;const t0=performance.now();
   const iv=setInterval(()=>{
-    const p=Math.min(1,(performance.now()-t0)/3000);
+    const p=Math.min(1,(performance.now()-t0)/1000);
     out.textContent=chars.map((c,i)=>/\s/.test(c)||p>=thr[i]?c:G[Math.random()*G.length|0]).join('');
     const n=Math.round(p*20);
     dec.textContent='DECRYPTING ['+'█'.repeat(n)+'░'.repeat(20-n)+'] '+Math.round(p*100)+'%';
