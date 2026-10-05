@@ -5,68 +5,162 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Blanker</title>
 <style>
-:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#000;--fg:#e8e8e8;--mut:#8a5560;--card:#0b0305;--bd:#3a0a14;--ac:#dc143c;--acfg:#000;--glow:0 0 10px rgba(220,20,60,.45)}
-*{box-sizing:border-box}
-html,body{background:#000}
-body{margin:0;color:var(--fg);font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:14px;max-width:760px;margin-inline:auto;background:radial-gradient(ellipse at top,#1a0309 0,#000 60%) no-repeat}
-h1{font-size:17px;margin:0 0 12px;color:var(--ac);letter-spacing:.14em;text-transform:uppercase;text-shadow:var(--glow);border-bottom:1px solid var(--ac);padding-bottom:8px}
-h1 small{color:var(--mut);font-size:11px;letter-spacing:.1em;margin-left:6px}
-textarea,.out{width:100%;border:1px solid var(--bd);border-left:3px solid var(--ac);background:var(--card);color:var(--fg);border-radius:2px;padding:10px;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}
+:root{color-scheme:dark;--bg:#000;--fg:#e8e8e8;--mut:#8a5560;--card:#0b0305;--bd:#3a0a14;--ac:#dc143c;--acfg:#000;--glow:0 0 12px rgba(220,20,60,.5)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000}
+body{color:var(--fg);font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;display:flex;flex-direction:column;min-height:100vh}
+
+/* ── BIG TITLE BAR ── */
+header{
+  padding:28px 40px 24px;
+  background:linear-gradient(135deg,#1a0309 0%,#0d0106 60%,#200408 100%);
+  border-bottom:2px solid var(--ac);
+  box-shadow:0 4px 30px rgba(220,20,60,.25);
+  flex-shrink:0;
+}
+header h1{
+  font-size:clamp(28px,5vw,52px);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ac);
+  text-shadow:0 0 20px rgba(220,20,60,.7),0 0 40px rgba(220,20,60,.3);
+  line-height:1;
+}
+header h1 small{
+  display:block;
+  font-size:clamp(10px,1.4vw,14px);
+  color:var(--mut);
+  letter-spacing:.22em;
+  margin-top:6px;
+  text-shadow:none;
+}
+header .subtitle{
+  margin-top:10px;
+  font-size:12px;
+  color:#5a2a33;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+/* ── SIDE-BY-SIDE MAIN ── */
+main{
+  display:flex;
+  flex:1;
+  gap:0;
+  min-height:0;
+}
+.panel{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:24px 28px;
+  min-width:0;
+  overflow:auto;
+}
+.panel-left{
+  border-right:1px solid var(--bd);
+  background:radial-gradient(ellipse at top left,#130205 0%,#000 70%) no-repeat;
+}
+.panel-right{
+  background:radial-gradient(ellipse at top right,#0d0103 0%,#000 70%) no-repeat;
+}
+.panel-label{
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--mut);
+  margin-bottom:12px;
+  border-bottom:1px solid #1a0309;
+  padding-bottom:6px;
+}
+
+textarea,.out{
+  width:100%;
+  border:1px solid var(--bd);
+  border-left:3px solid var(--ac);
+  background:var(--card);
+  color:var(--fg);
+  border-radius:2px;
+  padding:10px;
+  font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
 textarea:focus{outline:none;border-color:var(--ac);box-shadow:var(--glow)}
 textarea::placeholder{color:#5a2a33}
-textarea{height:150px;resize:vertical}
-.out{min-height:150px;max-height:50vh;overflow:auto;margin-top:10px}
-.bar{height:8px;background:var(--card);border:1px solid var(--bd);border-radius:1px;overflow:hidden;margin:6px 0}
+textarea{flex:1;resize:none;min-height:200px}
+.out{flex:1;min-height:200px;overflow:auto}
+
+.bar{height:8px;background:var(--card);border:1px solid var(--bd);border-radius:1px;overflow:hidden;margin:10px 0}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7a0a22,var(--ac));box-shadow:var(--glow);transition:width .15s}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-input[type=range]{width:100%;accent-color:var(--ac)}
-button{background:var(--ac);color:var(--acfg);border:1px solid var(--ac);border-radius:2px;padding:9px 14px;font:inherit;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+input[type=range]{width:100%;accent-color:var(--ac);margin:4px 0}
+button{background:var(--ac);color:var(--acfg);border:1px solid var(--ac);border-radius:2px;padding:9px 14px;font:inherit;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:box-shadow .15s}
 button:hover{box-shadow:var(--glow)}
 button.sec{background:#000;color:var(--ac)}
 .seg{display:inline-flex;border:1px solid var(--ac);border-radius:2px;overflow:hidden}
 .seg button{border:0;border-radius:0;background:#000;color:var(--ac)}
 .seg button.on{background:var(--ac);color:#000}
-.stat{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;text-transform:uppercase;letter-spacing:.08em}
+.stat{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;text-transform:uppercase;letter-spacing:.08em;margin-top:10px}
 .stat b{color:var(--ac)}
 button:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
-#dec{font-size:12px;color:var(--ac);letter-spacing:.08em;margin-top:10px;text-shadow:var(--glow);white-space:pre}
-#dec+.out{margin-top:4px}
+#dec{font-size:12px;color:var(--ac);letter-spacing:.08em;margin-bottom:8px;text-shadow:var(--glow);white-space:pre}
 #msg{font-size:12px;color:var(--ac);min-height:18px}
 </style>
 </head>
 <body>
-<h1>&gt; Blanker<small>// red team</small></h1>
-<textarea id="src" placeholder="Paste your document here…" spellcheck="false"></textarea>
 
-<div class="stat"><span>Blank <b id="pct">30</b>%</span><span id="cnt"></span></div>
-<div class="bar"><i id="fill"></i></div>
-<input type="range" id="rng" min="0" max="100" value="30">
+<!-- BIG TITLE BAR -->
+<header>
+  <h1>&gt; Blanker<small>// red team · fill-in-the-blank generator</small></h1>
+  <p class="subtitle">Paste text · choose blank % · generate · exfil</p>
+</header>
 
-<div class="row">
-  <div class="seg" id="mode">
-    <button data-m="words" class="on">Words → _____</button>
-    <button data-m="letters">Letters → _</button>
+<!-- SIDE-BY-SIDE PANELS -->
+<main>
+  <!-- LEFT: input + controls -->
+  <div class="panel panel-left">
+    <div class="panel-label">▌ Input &amp; Controls</div>
+
+    <textarea id="src" placeholder="Paste your document here…" spellcheck="false"></textarea>
+
+    <div class="stat"><span>Blank <b id="pct">30</b>%</span><span id="cnt"></span></div>
+    <div class="bar"><i id="fill"></i></div>
+    <input type="range" id="rng" min="0" max="100" value="30">
+
+    <div class="row">
+      <div class="seg" id="mode">
+        <button data-m="words" class="on">Words → _____</button>
+        <button data-m="letters">Letters → _</button>
+      </div>
+    </div>
+    <div class="row">
+      <button id="gen">▶ Generate</button>
+      <button class="sec" id="rand">⟳ Randomize</button>
+    </div>
   </div>
-  <button id="gen">▶ Generate</button>
-  <button class="sec" id="rand">⟳ Randomize</button>
-</div>
 
-<div id="dec" hidden></div>
-<div class="out" id="out"></div>
+  <!-- RIGHT: output + actions -->
+  <div class="panel panel-right">
+    <div class="panel-label">▌ Output</div>
 
-<div class="row">
-  <button id="copy">Copy payload</button>
-  <button class="sec" id="dl">Exfil .txt</button>
-  <span id="msg"></span>
-</div>
+    <div id="dec" hidden></div>
+    <div class="out" id="out"></div>
+
+    <div class="row" style="margin-top:14px">
+      <button id="copy">Copy payload</button>
+      <button class="sec" id="dl">Exfil .txt</button>
+      <span id="msg"></span>
+    </div>
+  </div>
+</main>
 
 <script>
 const $=id=>document.getElementById(id);
 const src=$('src'),rng=$('rng'),out=$('out'),msg=$('msg');
 let mode='words', ranks=[], result='', generated=false, busy=false;
-const G='█▓▒░#@$%&01<>/\\|';
-// Word = run of letters/digits (with inner ' ’ -). Everything else is kept verbatim.
-const RE=/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu;
+const G='█▓▒░#@$%\x0601<>/\\|';
+const RE=/[\p{L}\p{N}]+(?:['''\-][\p{L}\p{N}]+)*/gu;
 
 function reroll(){ranks=Array.from({length:1e5},()=>Math.random())}
 reroll();
